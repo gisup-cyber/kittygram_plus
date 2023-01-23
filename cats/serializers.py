@@ -12,13 +12,17 @@ class AchievementSerializer(serializers.ModelSerializer):
 
 class CatSerializer(serializers.ModelSerializer):
 
-    achievements = AchievementSerializer(many=True)
+    achievements = AchievementSerializer(many=True, required=False)
 
     class Meta:
         model = Cat
         fields = ('id', 'name', 'color', 'birth_year', 'owner', 'achievements')
 
     def create(self, validated_data):
+        if 'achievements' not in self.initial_data:
+            # То создаём запись о котике без его достижений
+            cat = Cat.objects.create(**validated_data)
+            return cat
         # Уберем список достижений из словаря validated_data и сохраним его
         achievements = validated_data.pop('achievements')
 
