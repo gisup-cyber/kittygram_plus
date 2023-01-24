@@ -12,6 +12,11 @@ class CreateRetrieveViewSet(mixins.CreateModelMixin, mixins.RetrieveModelMixin,
     pass
 
 
+class LightCatViewSet(CreateRetrieveViewSet):
+    queryset = Cat.objects.all()
+    serializer_class = CatSerializer
+
+
 class CatViewSet(viewsets.ModelViewSet):
     queryset = Cat.objects.all()
     serializer_class = CatSerializer
