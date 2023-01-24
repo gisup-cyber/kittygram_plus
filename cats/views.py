@@ -1,14 +1,26 @@
-from rest_framework import viewsets
+from rest_framework import mixins, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from .models import Cat, Owner
-from .serializers import CatSerializer, OwnerSerializer
+from .serializers import CatListSerializer, CatSerializer, OwnerSerializer
+
+
+class CreateRetrieveViewSet(mixins.CreateModelMixin, mixins.RetrieveModelMixin,
+                            viewsets.GenericViewSet):
+    # В теле класса никакой код не нужен! Пустячок, а приятно.
+    pass
 
 
 class CatViewSet(viewsets.ModelViewSet):
     queryset = Cat.objects.all()
     serializer_class = CatSerializer
+
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return CatListSerializer
+        return CatSerializer
+
     # Пишем метод, а в декораторе разрешим работу со списком объектов
     # и переопределим URL на более презентабельный
     @action(detail=False, url_path='recent-white-cats')

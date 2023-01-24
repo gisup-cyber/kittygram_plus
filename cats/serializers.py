@@ -6,6 +6,15 @@ from rest_framework import serializers
 from .models import Achievement, AchievementCat, Cat, Owner, CHOICES
 
 
+class CatListSerializer(serializers.ModelSerializer):
+    color = serializers.ChoiceField(choices=CHOICES)
+
+
+    class Meta:
+        model = Cat
+        fields = ('id', 'name', 'color')
+
+
 class Hex2NameColor(serializers.Field):
     """Создает кастомный тип поля для сериализатора."""
     # При чтении данных ничего не меняем - просто возвращаем как есть
