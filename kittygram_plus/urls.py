@@ -11,6 +11,9 @@ router.register(r'mycats', LightCatViewSet)
 
 urlpatterns = [
     path('api-token-auth/', views.obtain_auth_token),
+    path('auth/', include('djoser.urls')),
+    path('auth/', include('djoser.urls.jwt')),
     path('', include(router.urls)),
+
     
 ] 
